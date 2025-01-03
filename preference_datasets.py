@@ -1,3 +1,48 @@
+"""偏好数据集处理模块
+
+这个模块负责处理和准备用于 SFT (Supervised Fine-Tuning) 和 DPO (Direct Preference Optimization) 训练的数据集。
+主要功能包括：
+
+1. 数据集加载与统一格式化
+   - 支持多个数据源：Anthropic-HH、Stanford-HH、StackExchange
+   - 统一转换为标准格式：{prompt, responses, pairs, sft_target}
+   
+2. 数据处理功能
+   - 文本清理：HTML标签处理、特殊字符处理
+   - 数据分割：训练集/验证集划分
+   - 数据过滤：根据质量分数过滤（如SHP数据集）
+   
+3. 批处理支持
+   - 动态批次生成
+   - 序列填充和截断
+   - 标签生成（用于训练）
+   
+4. 训练模式适配
+   - SFT模式：使用 (prompt, chosen) 对进行监督训练
+   - DPO模式：使用完整的 (prompt, chosen, rejected) 三元组
+   
+主要类和函数：
+- get_dataset(): 统一的数据集加载接口
+- get_batch_iterator(): 训练批次生成器
+- tokenize_batch_element(): 单个样本的标记化处理
+
+使用示例：
+```python
+# SFT 模式
+iterator = get_batch_iterator(
+    names=['hh'], 
+    tokenizer=tokenizer,
+    sft_mode=True
+)
+
+# DPO 模式
+iterator = get_batch_iterator(
+    names=['hh'], 
+    tokenizer=tokenizer,
+    sft_mode=False
+)
+```
+"""
 import datasets
 import torch
 from torch.utils.data import DataLoader, Dataset

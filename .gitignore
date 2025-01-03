@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Data directory
+# data/
+# data/hh-rlhf/
+
+# Environment
+.env
+.venv
+env/
+venv/
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+wandb/
+
+# Model checkpoints
+checkpoints/
+outputs/ 
